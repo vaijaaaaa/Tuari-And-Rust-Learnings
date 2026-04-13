@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+}
+
+.container {
+  min-height: 100vh;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.preview {
+  max-width: 700px;
+  margin: 24px auto;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
