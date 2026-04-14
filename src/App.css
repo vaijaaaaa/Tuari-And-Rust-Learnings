@@ -1,38 +1,110 @@
+:root {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
+  background: linear-gradient(135deg, #f6f8fb 0%, #e9eef7 100%);
+  color: #1f2a37;
 }
 
-.container {
+.page {
   min-height: 100vh;
-  padding: 40px 20px;
-  text-align: center;
+  display: grid;
+  place-items: center;
+  padding: 24px;
 }
 
-button {
-  padding: 10px 16px;
+.card {
+  width: 100%;
+  max-width: 620px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  margin: 0 0 16px;
+  font-size: 28px;
+}
+
+.todo-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.todo-form input {
+  flex: 1;
+  border: 1px solid #cdd6e1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 15px;
+}
+
+.todo-form button {
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
+  padding: 10px 16px;
+  background: #1f6feb;
+  color: #fff;
+  font-weight: 600;
   cursor: pointer;
 }
 
-.preview {
-  max-width: 700px;
-  margin: 24px auto;
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  text-align: left;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.todo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
 }
 
-pre {
-  white-space: pre-wrap;
-  word-break: break-word;
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid #e3e8ef;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.todo-item label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.done {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.delete-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: #dc3545;
+  color: #fff;
+  cursor: pointer;
 }
 
 .error {
-  color: red;
-  font-weight: bold;
+  color: #dc3545;
+  margin: 0 0 10px;
+}
+
+.empty {
+  text-align: center;
+  color: #697586;
+  border: 1px dashed #cdd6e1;
+  border-radius: 10px;
+  padding: 12px;
 }
