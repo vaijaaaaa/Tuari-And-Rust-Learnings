@@ -21,7 +21,8 @@ export default function InventoryPage() {
     try {
       setItems(await fetchInventory());
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load inventory");
+      console.error(err);
+      setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Failed to load inventory");
     } finally {
       setLoading(false);
     }
@@ -30,6 +31,12 @@ export default function InventoryPage() {
   useEffect(() => {
     load();
   }, []);
+
+  useEffect(() => {
+    if (!productId && items.length > 0) {
+      setProductId(String(items[0].productId));
+    }
+  }, [items, productId]);
 
   async function onAdjust(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -50,7 +57,8 @@ export default function InventoryPage() {
       setNote("");
       await load();
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : "Adjustment failed");
+      console.error(err);
+      setSubmitError(typeof err === "string" ? err : err instanceof Error ? err.message : "Adjustment failed");
     } finally {
       setSubmitting(false);
     }
@@ -66,28 +74,48 @@ export default function InventoryPage() {
       {role === "admin" ? (
         <section className="rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-slate-900">Adjust Stock</h2>
+          {items.length === 0 ? (
+            <p className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+              No active products exist yet. Create a product first, then adjust its stock.
+            </p>
+          ) : null}
+
           <form className="mt-4 grid gap-4 md:grid-cols-3" onSubmit={onAdjust}>
-            <input
+            <select
               className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500"
-              placeholder="Product ID"
               value={productId}
-              onChange={(e) => setProductId(e.currentTarget.value)}
-            />
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                setProductId(value);
+              }}
+            >
+              {items.map((item) => (
+                <option key={item.productId} value={item.productId}>
+                  {item.productId} - {item.sku} - {item.name}
+                </option>
+              ))}
+            </select>
             <input
               className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500"
               placeholder="Quantity Delta (+/-)"
               value={quantityDelta}
-              onChange={(e) => setQuantityDelta(e.currentTarget.value)}
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                setQuantityDelta(value);
+              }}
             />
             <input
               className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500"
               placeholder="Note"
               value={note}
-              onChange={(e) => setNote(e.currentTarget.value)}
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                setNote(value);
+              }}
             />
             <button
               type="submit"
-              disabled={submitting}
+              disabled={submitting || items.length === 0}
               className="w-fit rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-70"
             >
               {submitting ? "Applying..." : "Apply Adjustment"}
@@ -148,3 +176,4 @@ export default function InventoryPage() {
     </div>
   );
 }
+

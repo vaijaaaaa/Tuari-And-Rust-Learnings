@@ -31,7 +31,8 @@ export default function ProductsPage() {
       const data = await fetchProducts();
       setProducts(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load products");
+      console.error(err);
+      setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Failed to load products");
     } finally {
       setLoading(false);
     }
@@ -68,7 +69,8 @@ export default function ProductsPage() {
       setForm(initialForm);
       setCreateSuccess("Product created successfully.");
     } catch (err) {
-      setCreateError(err instanceof Error ? err.message : "Failed to create product");
+      console.error(err);
+      setCreateError(typeof err === "string" ? err : err instanceof Error ? err.message : "Failed to create product");
     } finally {
       setCreating(false);
     }
@@ -90,7 +92,10 @@ export default function ProductsPage() {
             <input
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500"
               value={form.sku}
-              onChange={(e) => setForm((f) => ({ ...f, sku: e.currentTarget.value }))}
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                setForm((f) => ({ ...f, sku: value }));
+              }}
               placeholder="Enter SKU"
             />
           </div>
@@ -100,7 +105,10 @@ export default function ProductsPage() {
             <input
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500"
               value={form.name}
-              onChange={(e) => setForm((f) => ({ ...f, name: e.currentTarget.value }))}
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                setForm((f) => ({ ...f, name: value }));
+              }}
               placeholder="Enter product name"
             />
           </div>
@@ -111,9 +119,10 @@ export default function ProductsPage() {
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500"
               rows={3}
               value={form.description}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, description: e.currentTarget.value }))
-              }
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                setForm((f) => ({ ...f, description: value }));
+              }}
               placeholder="Optional description"
             />
           </div>

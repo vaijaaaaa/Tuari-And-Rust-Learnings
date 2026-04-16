@@ -47,6 +47,50 @@ fn seed_defaults(conn: &Connection) -> Result<()> {
         )?;
     }
 
+    let product_exists: i64 = conn.query_row(
+        "SELECT COUNT(1) FROM products",
+        params![],
+        |row| row.get(0),
+    )?;
+
+    if product_exists == 0 {
+        let season_id: Option<i64> = conn
+            .query_row(
+                "SELECT id FROM seasons ORDER BY id ASC LIMIT 1",
+                params![],
+                |row| row.get(0),
+            )
+            .ok();
+
+        let season_id = if season_id.is_some() {
+            season_id
+        } else {
+            conn.execute(
+                "INSERT INTO seasons (name, is_active) VALUES (?1, 1)",
+                params!["Default Season"],
+            )?;
+            Some(conn.last_insert_rowid())
+        };
+
+        conn.execute(
+            "
+            INSERT INTO products (sku, name, description, season_id, is_active)
+            VALUES (?1, ?2, ?3, ?4, 1)
+            ",
+            params![
+                "DEMO-001",
+                "Demo Product",
+                "Seeded demo product for inventory adjustments",
+                season_id
+            ],
+        )?;
+    }
+
+    conn.execute(
+        "INSERT OR IGNORE INTO inventory_stocks (product_id, quantity) SELECT id, 0 FROM products",
+        params![],
+    )?;
+
     Ok(())
 }
 

@@ -13,7 +13,8 @@ export default function AnalyticsPage() {
     try {
       setSummary(await fetchDashboardSummary());
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load analytics");
+      console.error(err);
+      setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Failed to load analytics");
     } finally {
       setLoading(false);
     }
@@ -71,3 +72,4 @@ export default function AnalyticsPage() {
     </div>
   );
 }
+

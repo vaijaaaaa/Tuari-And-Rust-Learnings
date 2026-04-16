@@ -31,7 +31,8 @@ export default function SeasonsPage() {
       const data = await fetchSeasons();
       setSeasons(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load seasons");
+      console.error(err);
+      setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Failed to load seasons");
     } finally {
       setLoading(false);
     }
@@ -64,7 +65,8 @@ export default function SeasonsPage() {
       setForm(initialForm);
       setCreateSuccess("Season created successfully.");
     } catch (err) {
-      setCreateError(err instanceof Error ? err.message : "Failed to create season");
+      console.error(err);
+      setCreateError(typeof err === "string" ? err : err instanceof Error ? err.message : "Failed to create season");
     } finally {
       setCreating(false);
     }
@@ -86,7 +88,10 @@ export default function SeasonsPage() {
             <input
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500"
               value={form.name}
-              onChange={(e) => setForm((f) => ({ ...f, name: e.currentTarget.value }))}
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                setForm((f) => ({ ...f, name: value }));
+              }}
               placeholder="Enter season name"
             />
           </div>
@@ -97,9 +102,10 @@ export default function SeasonsPage() {
               type="date"
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500"
               value={form.startDate}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, startDate: e.currentTarget.value }))
-              }
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                setForm((f) => ({ ...f, startDate: value }));
+              }}
             />
           </div>
 
@@ -109,7 +115,10 @@ export default function SeasonsPage() {
               type="date"
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500"
               value={form.endDate}
-              onChange={(e) => setForm((f) => ({ ...f, endDate: e.currentTarget.value }))}
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                setForm((f) => ({ ...f, endDate: value }));
+              }}
             />
           </div>
 

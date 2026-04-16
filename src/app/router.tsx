@@ -58,7 +58,8 @@ function LoginPage() {
       await login(username, password);
       navigate("/dashboard", { replace: true });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
+      console.error(err);
+      setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Login failed");
     } finally {
       setLoading(false);
     }

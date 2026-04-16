@@ -19,7 +19,8 @@ export default function SalesPage() {
     try {
       setRows(await fetchSales());
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load sales");
+      console.error(err);
+      setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Failed to load sales");
     } finally {
       setLoading(false);
     }
@@ -54,7 +55,8 @@ export default function SalesPage() {
       setNote("");
       await load();
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : "Sale failed");
+      console.error(err);
+      setSubmitError(typeof err === "string" ? err : err instanceof Error ? err.message : "Sale failed");
     } finally {
       setSubmitting(false);
     }
@@ -145,3 +147,4 @@ export default function SalesPage() {
     </div>
   );
 }
+

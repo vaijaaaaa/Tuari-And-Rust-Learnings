@@ -33,7 +33,8 @@ export default function UsersPage() {
       const data = await fetchUsers();
       setUsers(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load users");
+      console.error(err);
+      setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Failed to load users");
     } finally {
       setLoading(false);
     }
@@ -72,7 +73,8 @@ export default function UsersPage() {
       setForm(initialForm);
       setCreateSuccess("User created successfully.");
     } catch (err) {
-      setCreateError(err instanceof Error ? err.message : "Failed to create user");
+      console.error(err);
+      setCreateError(typeof err === "string" ? err : err instanceof Error ? err.message : "Failed to create user");
     } finally {
       setCreating(false);
     }
@@ -96,7 +98,10 @@ export default function UsersPage() {
             <input
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500"
               value={form.fullName}
-              onChange={(e) => setForm((f) => ({ ...f, fullName: e.currentTarget.value }))}
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                setForm((f) => ({ ...f, fullName: value }));
+              }}
               placeholder="Enter full name"
             />
           </div>
@@ -106,7 +111,10 @@ export default function UsersPage() {
             <input
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500"
               value={form.username}
-              onChange={(e) => setForm((f) => ({ ...f, username: e.currentTarget.value }))}
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                setForm((f) => ({ ...f, username: value }));
+              }}
               placeholder="Enter username"
             />
           </div>
@@ -117,7 +125,10 @@ export default function UsersPage() {
               type="password"
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500"
               value={form.password}
-              onChange={(e) => setForm((f) => ({ ...f, password: e.currentTarget.value }))}
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                setForm((f) => ({ ...f, password: value }));
+              }}
               placeholder="Enter password"
             />
           </div>
@@ -127,9 +138,10 @@ export default function UsersPage() {
             <select
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500"
               value={form.role}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, role: e.currentTarget.value as "admin" | "user" }))
-              }
+              onChange={(e) => {
+                const value = e.currentTarget.value as "admin" | "user";
+                setForm((f) => ({ ...f, role: value }));
+              }}
             >
               <option value="user">user</option>
               <option value="admin">admin</option>

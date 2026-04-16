@@ -19,7 +19,8 @@ export default function PurchasePage() {
     try {
       setRows(await fetchPurchases());
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load purchases");
+      console.error(err);
+      setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Failed to load purchases");
     } finally {
       setLoading(false);
     }
@@ -54,7 +55,8 @@ export default function PurchasePage() {
       setNote("");
       await load();
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : "Purchase failed");
+      console.error(err);
+      setSubmitError(typeof err === "string" ? err : err instanceof Error ? err.message : "Purchase failed");
     } finally {
       setSubmitting(false);
     }
@@ -145,3 +147,4 @@ export default function PurchasePage() {
     </div>
   );
 }
+
